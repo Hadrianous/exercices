@@ -5,4 +5,15 @@ services:
     ports:
       - 8095:80
     volumes:
-      - ./nginx
+      - ./public:/var/www/html:ro # Serve PHP files
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: ./php
+    container_name: php
+    volumes:
+      - ./src:/var/www/html
+      - ./php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro

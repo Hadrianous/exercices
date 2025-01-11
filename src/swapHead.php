@@ -16,38 +16,37 @@ class ListNode {
 class Solution {
 
     public function swapPairs(ListNode $head): ListNode {
-        $newStartHead = $head->next;
-        $currentHead = $head;
-        while ($currentHead->next !== null) {
-            $currentHead = $currentHead->next;
-            $this->swapHead($head);
-            print_r($currentHead->val);
+        $dummy = new ListNode(0);
+        $dummy->next = $head;
+        $currentHead = $dummy;
+
+        while ($currentHead->next !== null && $currentHead->next->next !== null) {
+            $first = $currentHead->next;
+            $second = $currentHead->next->next;
+
+            $first->next = $second->next;
+            $second->next = $first;
+            $currentHead->next = $second;
+            $currentHead = $first;
         }
 
-        return $newStartHead;
-    }
-
-    private function swapHead(?ListNode $head) {
-        if ($head === null || $head->next == null) {return;}
-        $nextNode = $head->next;
-        $head->next = $nextNode->next;
-        $nextNode->next = $head;
+        return $dummy->next;
     }
 }
 
-$node1 = new ListNode(2);
-$node2 = new ListNode(1, $node1);
-$node3 = new ListNode(4, $node2);
-$node4 = new ListNode(3, $node3);
+$node1 = new ListNode(4);
+$node2 = new ListNode(3, $node1);
+$node3 = new ListNode(2, $node2);
+$node4 = new ListNode(1, $node3);
 
 $solution = new Solution();
 $head = $solution->swapPairs($node4);
 
-while ($head->next == null) {
+while ($head !== null) {
     print_r($head->val);
     $head = $head->next;
 }
 
-print_r("Done");
+print_r("<br>Done");
 
 
