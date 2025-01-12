@@ -2,34 +2,31 @@
 
 class Solution {
 
-    /**
-     * @param String $str1
-     * @param String $str2
-     * @return String
-     */
-    function gcdOfStrings($str1, $str2) {
-        $divisor = [];
-        $charCount = [];
-        for ($i=0; $i < max(strlen($str1), strlen($str2)); $i++) {
-            if (!empty($str1[$i]) && $str1[$i] === $str2[$i]) {
-                $charCount[$str1[$i]] = ($charCount[$str1[$i]] ?? 0) + 1;
-            }
-        }
-        print_r($charCount);
+    function gcdOfStrings(string $str1, string $str2): String {
 
-        foreach ($charCount as $char => $value) {
-            if ($value < 2) {
-                break;
-            }
-            $divisor[] = $char;
+        if ($str1 . $str2 !== $str2 . $str1) {
+            return "";
         }
 
-        return implode($divisor);
+        $dividend = max(strlen($str1), strlen($str2));
+        $divisor = min(strlen($str1), strlen($str2));
+
+        $gcd = $this->getGCD($dividend, $divisor);
+
+        return substr($str1, 0, $gcd);
+    }
+
+    private function getGCD(int $x, int $y): int {
+        if ($y === 0) {
+            return $x;
+        }
+
+        return $this->getGCD($y, $x % $y);
     }
 }
 
-$str1 = "ABCABC";
-$str2 = "ABC";
+$str1 = "TAUXXTAUXXTAUXXTAUXXTAUXX";
+$str2 = "TAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXXTAUXX";
 
 $solution = new Solution();
 print_r($solution->gcdOfStrings($str1, $str2));
