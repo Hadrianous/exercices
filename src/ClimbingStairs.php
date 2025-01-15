@@ -1,44 +1,21 @@
 <?php
 
 class Solution {
-
-    /**
-     * @param Integer $n
-     * @return Integer
-     */
-    function climbStairs(int $n): int {
+    public function climbStairs(int $n): int {
 
         if ($n === 1) { return 1; }
 
-        $result = 0;
+        $steps = [1, 1];
 
-        $this->doStep($n -1, $result);
-        $this->doStep($n -2, $result);
-
-        return $result;
-    }
-
-    private function doStep(int $stepsLeft, int &$result) {
-        if ($stepsLeft < 0) {
-            return;
+        for ($i = $n - 2; $i > 0; $i--) {
+            $step1 = $steps[0];
+            $steps[0] = $steps[0] + $steps[1];
+            $steps[1] = $step1;
         }
 
-//        print("left $stepsLeft");
-
-        if (in_array($stepsLeft, [0, 1])) {
-            $result++;
-            return;
-        }
-
-        $this->doStep($stepsLeft -1, $result);
-        $this->doStep($stepsLeft -2, $result);
+        return $steps[0] + $steps[1];
     }
 }
 
 $solution = new Solution();
-echo $solution->climbStairs(38);
-if (assert(3 === $solution->climbStairs(38))) {
-    echo "Done";
-} else {
-    echo "Failed";
-}
+echo $solution->climbStairs(5);
